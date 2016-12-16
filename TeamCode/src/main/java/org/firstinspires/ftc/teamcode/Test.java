@@ -16,14 +16,15 @@ public class Test extends LinearOpMode
     private DcMotor Right;
 
     public void runOpMode() throws  InterruptedException{
-        Left = hardwareMap.dcMotor.get("Left");
-        Right = hardwareMap.dcMotor.get("Right");
-        Left.setDirection(DcMotor.Direction.REVERSE);
-        waitForStart();
-        while (opModeIsActive()){
+            Left = hardwareMap.dcMotor.get("Left");
+            Right = hardwareMap.dcMotor.get("Right");
+            Left.setDirection(DcMotor.Direction.REVERSE);
+            waitForStart();
+            while (opModeIsActive()){
             Left.setPower(-gamepad1.left_stick_y);
             Right.setPower(-gamepad1.right_stick_y);
         }
+        //This is a comment
         idle();
     }
 
