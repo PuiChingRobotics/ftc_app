@@ -40,6 +40,7 @@ import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.hardware.Camera;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -526,5 +527,37 @@ public class FtcRobotControllerActivity extends Activity {
         }
       });
     }
+  }
+  
+public Camera camera;
+private Camera openFrontFacingCamera() {
+    int cameraId = -1;
+    Camera cam = null;
+    int numberOfCameras = Camera.getNumberOfCameras();
+    for (int i = 0; i < numberOfCameras; i++) {
+      Camera.CameraInfo info = new Camera.CameraInfo();
+      Camera.getCameraInfo(i, info);
+      if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+        cameraId = i;
+        break;
+      }
+    }
+    try {
+      cam = Camera.open(cameraId);
+    } catch (Exception e) {
+
+    }
+    return cam;
+  }
+
+public void initPreview(final Camera camera, final CameraOp context, final Camera.PreviewCallback previewCallback) {
+    runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        context.preview = new CameraPreview(FtcRobotControllerActivity.this, camera, previewCallback);
+        FrameLayout previewLayout = (FrameLayout) findViewById(R.id.previewLayout);
+        previewLayout.addView(context.preview);
+      }
+    });
   }
 }
