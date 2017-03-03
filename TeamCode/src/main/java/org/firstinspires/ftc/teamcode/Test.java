@@ -15,6 +15,9 @@ public class Test extends LinearOpMode{
     public void runOpMode(){
 
         robot.init();
+        robot.runModeSet("tele");
+
+        waitForStart();
 
         while (opModeIsActive()){
             robot.left.setPower(robot.left.getPower() + gamepad1.left_stick_y * robot.slow * robot._new);

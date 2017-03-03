@@ -37,4 +37,17 @@ public class RobotInit {
         m2.setDirection(DcMotor.Direction.REVERSE);
     }
 
+    public void runModeSet(String s){
+        if (s == "position"){
+            left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }else if (s == "reset"){
+            left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }else if (s == "tele"){
+            left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+    }
+
 }

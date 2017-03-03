@@ -1,8 +1,36 @@
 package org.firstinspires.ftc.teamcode;
 
-/**
- * Created by user on 3/3/2017.
- */
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-public class TestAuto {
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+
+
+@Autonomous(name="TestAuto", group="11052")
+public class TestAuto extends LinearOpMode{
+
+    RobotInit robot = new RobotInit();
+
+    double posFirstStraight = 20000;
+    double angleTurn = 45;
+
+
+
+
+    @Override
+    public void runOpMode(){
+
+        robot.init();
+        robot.runModeSet("position");
+
+        waitForStart();
+
+        while (opModeIsActive()){
+            robot.left.setPower(1);
+            robot.right.setPower(1);
+        }
+
+
+    }
 }
