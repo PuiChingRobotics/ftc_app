@@ -1,0 +1,80 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+@TeleOp(name="Test", group="11052")
+public class Test extends LinearOpMode{
+
+    RobotInit robot = new RobotInit();
+
+    @Override
+    public void runOpMode(){
+
+        robot.init(hardwareMap);
+        robot.runModeSet("tele");
+
+        robot.left.setPower(0);
+        robot.right.setPower(0);
+        robot.m1.setPower(0);
+        robot.m2.setPower(0);
+        robot.roll.setPower(0);
+        robot.cover.setPosition(0);
+
+        waitForStart();
+
+        while (opModeIsActive()){
+            if (gamepad1.right_bumper){
+                robot.left.setPower(robot.left.getPower() * robot._old + gamepad1.left_stick_y * robot.fast * robot._new);
+                robot.right.setPower(robot.right.getPower() * robot._old + gamepad1.right_stick_y * robot.fast * robot._new);
+            }//fast
+            else if (gamepad1.left_bumper){
+                robot.left.setPower(robot.left.getPower() * robot._old + gamepad1.left_stick_y * robot.slow * robot._new);
+                robot.right.setPower(robot.right.getPower() * robot._old + gamepad1.right_stick_y * robot.slow * robot._new);
+            }//slow
+            else {
+                robot.left.setPower(robot.left.getPower() * robot._old + gamepad1.left_stick_y * robot.normal * robot._new);
+                robot.right.setPower(robot.right.getPower() * robot._old + gamepad1.right_stick_y * robot.normal * robot._new);
+            }//normal
+
+            if (gamepad2.a){
+                robot.slowing = false;
+                robot.m1.setPower(0.75);
+                robot.m2.setPower(0.75);
+            }//shooting_open
+
+            if (gamepad2.b){
+                robot.slowing = true;
+            }//shooting_off
+
+            if (gamepad2.x){
+                robot.cover.setPosition(1);
+            }//cover_off
+
+            if (gamepad2.y){
+                robot.cover.setPosition(0);
+            }//cover_open
+
+            if (robot.slowing){
+                robot.m1.setPower(robot.m1.getPower() * robot.shootOld);
+                robot.m2.setPower(robot.m2.getPower() * robot.shootOld);
+            }
+
+            if (gamepad2.right_trigger > 0) {
+                robot.roll.setPower(1);
+            }
+            else if (gamepad2.left_trigger > 0){
+                robot.roll.setPower(-1);
+            }
+            else robot.roll.setPower(0);
+
+            telemetry.addData("Power",robot.left.getPower());
+            telemetry.addData("trigger",robot.roll.getPower());
+            telemetry.addData("Position", robot.cover.getPosition());
+            telemetry.update();
+        }
+    }
+}

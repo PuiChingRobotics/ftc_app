@@ -1,0 +1,64 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.LightSensor;
+import com.qualcomm.robotcore.hardware.Servo;
+
+public class RobotInit {
+
+    public DcMotor left;
+    public DcMotor right;
+    public DcMotor m1;
+    public DcMotor m2;
+    public DcMotor roll;
+    public LightSensor sensorLight1;
+    public LightSensor sensorLight2;
+    public Servo cover;
+
+    double fast = 1;
+    double normal = 0.6;
+    double slow = 0.4;
+    double _new = 0.2;
+    double _old = 0.8;
+    double shootOld = 0.95;
+    boolean slowing = false;
+
+    public HardwareMap _hw;
+
+    public void RobotInit(){
+
+    }
+
+
+    public void init(HardwareMap hw){
+        _hw = hw;
+
+        left = _hw.dcMotor.get("left");     //Motors for moving
+        right = _hw.dcMotor.get("right");
+        m1 = _hw.dcMotor.get("m1");    // Motors for shooting
+        m2 = _hw.dcMotor.get("m2");
+        roll = _hw.dcMotor.get("roll");   // Motor for rolling
+        sensorLight1 = _hw.lightSensor.get("sensorLight1"); // NXT Light Sensor
+        sensorLight2 = _hw.lightSensor.get("sensorLight2");
+        cover = _hw.servo.get("cover");
+
+        left.setDirection(DcMotor.Direction.REVERSE);
+        m1.setDirection(DcMotor.Direction.REVERSE);
+    }
+
+    public void runModeSet(String s){
+        if (s == "position"){
+            left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }else if (s == "reset"){
+            left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }else if (s == "tele"){
+            left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+    }
+
+}

@@ -1,0 +1,59 @@
+package org.firstinspires.ftc.teamcode;
+
+import android.graphics.Camera;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+
+
+@Autonomous(name="TestAuto", group="11052")
+public class TestAuto extends LinearOpMode{
+
+    RobotInit robot = new RobotInit();
+    Camera camera;
+
+    final int posFirstStraight = -5000;
+    final int posApproachBeacon = -1000;
+    final int angleTurn = 45;
+    final double upperThreshold = 1;
+    final double lowerThreshold = 0.5;
+
+
+    private void resetPosition(int n, int i, int j){
+        robot.runModeSet("reset");
+        robot.runModeSet("position");
+        robot.left.setTargetPosition(n);
+        robot.right.setTargetPosition(n);
+        robot.left.setPower(i);
+        robot.right.setPower(j);
+    }
+
+    private boolean isWhiteLine(){
+        if (robot.sensorLight1.getLightDetected() >= lowerThreshold && robot.sensorLight1.getLightDetected() <= upperThreshold){
+            return true;
+        }else return false;
+    }
+
+    public void runOpMode(){
+
+        robot.init(hardwareMap);
+        robot.runModeSet("position");
+
+        waitForStart();
+
+        resetPosition(posFirstStraight, 1, 1);
+
+        while (opModeIsActive() && !isWhiteLine()){
+            telemetry.addData("current ",robot.left.getCurrentPosition());
+            telemetry.addData("Target ",robot.left.getTargetPosition());
+            telemetry.update();
+        }
+
+        resetPosition(angleTurn, 1, 0);
+        resetPosition(posApproachBeacon, 1, 1);
+
+    }
+}
